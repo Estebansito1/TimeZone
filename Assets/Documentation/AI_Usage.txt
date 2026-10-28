@@ -11,12 +11,16 @@ AI was used to help with:
 - Implementing weapon upgrades from one shot to two shots and then a three-shot spread
 - Implementing increasing asteroid speed and spawn frequency
 - Implementing the scrolling background
-- Adding level-up celebration ships
+- Adding level-up celebration ships and varying their movement
 - Adding and troubleshooting sound effects
 - Creating the Start Game and Game Over / Play Again systems
+- Adding a persistent high-score system and “NEW HIGH SCORE” feedback
+- Adding the flashing Play Again text
+- Creating the hidden Up, Up, Down, Down support-squad feature
+- Implementing support ships that move independently, fire at different rates, can be destroyed by asteroids, and contribute to the player's score
 - Organizing and commenting the code for readability
 - Troubleshooting Git setup and pushing the project to GitHub
 
 I tested the game directly in Unity after each major change and adjusted the project based on the results. AI was used as a development and troubleshooting tool, while the final implementation was tested and verified in Unity.
 
-I am prepared to explain the main scripts and gameplay systems used in the project, including PlayerController, Asteroid, AsteroidSpawner, HealthAsteroid, ScoreCounter, CelebrationShip, Laser, BackgroundScroll, StartMenu, and GameOverMenu.
+I am prepared to explain the main scripts and gameplay systems used in the project, including PlayerController, Asteroid, AsteroidSpawner, HealthAsteroid, ScoreCounter, CelebrationShip, SupportShip, SupportCode, Laser, BackgroundScroll, StartMenu, and GameOverMenu.

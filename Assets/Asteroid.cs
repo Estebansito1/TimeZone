@@ -60,6 +60,18 @@ public class Asteroid : MonoBehaviour
 
     public void TakeDamage()
     {
+        // Award half of the asteroid's total value
+        // for every successful hit.
+        if (scoreCounter != null)
+        {
+            int pointsPerHit =
+                points / 2;
+
+            scoreCounter.AddScore(
+                pointsPerHit
+            );
+        }
+
         hitPoints--;
 
         // First hit: play hit sound and tint the asteroid red.
@@ -85,7 +97,7 @@ public class Asteroid : MonoBehaviour
             }
         }
 
-        // Final hit: play explosion, award points, and destroy asteroid.
+        // Final hit: play explosion and destroy the asteroid.
         if (hitPoints <= 0)
         {
             if (explosionSound != null)
@@ -95,11 +107,6 @@ public class Asteroid : MonoBehaviour
                     transform.position,
                     soundVolume
                 );
-            }
-
-            if (scoreCounter != null)
-            {
-                scoreCounter.AddScore(points);
             }
 
             Destroy(gameObject);

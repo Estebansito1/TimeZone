@@ -7,6 +7,8 @@ public class ScoreCounter : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelText;
+    public TextMeshProUGUI finalScoreText;
+    public TextMeshProUGUI highScoreText;
 
     [Header("Score")]
     public int score = 0;
@@ -14,7 +16,6 @@ public class ScoreCounter : MonoBehaviour
 
     [Header("Level Celebration")]
     public GameObject celebrationShipPrefab;
-    public int jetsPerLevelUp = 3;
     public float jetSpacing = 1.5f;
     public float jetSpawnY = -4.5f;
 
@@ -25,11 +26,13 @@ public class ScoreCounter : MonoBehaviour
     public float soundVolume = 1f;
 
     private int currentLevel = 1;
+    private int highScore = 0;
+
+    // Tracks whether the player beat the previous high score this run.
+    private bool newHighScore = false;
 
     void Start()
     {
-        // Find the score text automatically if it was not assigned
-        // in the Inspector.
         if (scoreText == null)
         {
             GameObject scoreGO =
@@ -42,7 +45,6 @@ public class ScoreCounter : MonoBehaviour
             }
         }
 
-        // Find the level text automatically if needed.
         if (levelText == null)
         {
             GameObject levelGO =
@@ -55,21 +57,66 @@ public class ScoreCounter : MonoBehaviour
             }
         }
 
+        if (finalScoreText == null)
+        {
+            GameObject finalScoreGO =
+                GameObject.Find("FinalScoreText");
+
+            if (finalScoreGO != null)
+            {
+                finalScoreText =
+                    finalScoreGO.GetComponent<TextMeshProUGUI>();
+            }
+        }
+
+        if (highScoreText == null)
+        {
+            GameObject highScoreGO =
+                GameObject.Find("HighScoreText");
+
+            if (highScoreGO != null)
+            {
+                highScoreText =
+                    highScoreGO.GetComponent<TextMeshProUGUI>();
+            }
+        }
+
+        // Load the previously saved high score.
+        highScore =
+            PlayerPrefs.GetInt(
+                "HighScore",
+                0
+            );
+
         currentLevel = 1;
+        newHighScore = false;
 
         UpdateUI();
+        UpdateGameOverScores();
     }
 
     public void AddScore(int points)
     {
-        // Add points when an asteroid is destroyed.
         score += points;
 
-        // Every pointsPerLevel points increases the level.
+        // If the player beats the saved high score,
+        // mark this run as a new record.
+        if (score > highScore)
+        {
+            highScore = score;
+            newHighScore = true;
+
+            PlayerPrefs.SetInt(
+                "HighScore",
+                highScore
+            );
+
+            PlayerPrefs.Save();
+        }
+
         int newLevel =
             (score / pointsPerLevel) + 1;
 
-        // Start the celebration only when entering a new level.
         if (newLevel > currentLevel)
         {
             currentLevel = newLevel;
@@ -80,11 +127,11 @@ public class ScoreCounter : MonoBehaviour
         }
 
         UpdateUI();
+        UpdateGameOverScores();
     }
 
     IEnumerator LevelUpCelebration()
     {
-        // Play the main level-up sound first.
         PlayLevelUpSound();
 
         yield return new WaitForSeconds(0.4f);
@@ -98,7 +145,6 @@ public class ScoreCounter : MonoBehaviour
             yield return new WaitForSeconds(0.35f);
         }
 
-        // Play the jet sound before the celebration ships appear.
         PlayCelebrationJetSound();
 
         StartCoroutine(
@@ -144,7 +190,6 @@ public class ScoreCounter : MonoBehaviour
 
     void UpdateUI()
     {
-        // Update the score display.
         if (scoreText != null)
         {
             scoreText.text =
@@ -152,7 +197,6 @@ public class ScoreCounter : MonoBehaviour
                 score.ToString();
         }
 
-        // Update the level display.
         if (levelText != null)
         {
             levelText.text =
@@ -161,33 +205,69 @@ public class ScoreCounter : MonoBehaviour
         }
     }
 
+    public void UpdateGameOverScores()
+    {
+        if (finalScoreText != null)
+        {
+            finalScoreText.text =
+                "Final Score: " +
+                score.ToString();
+        }
+
+        if (highScoreText != null)
+        {
+            if (newHighScore)
+            {
+                highScoreText.text =
+                    "NEW HIGH SCORE: " +
+                    highScore.ToString();
+            }
+            else
+            {
+                highScoreText.text =
+                    "High Score: " +
+                    highScore.ToString();
+            }
+        }
+    }
+
     IEnumerator SpawnCelebrationJets()
     {
-        // Stop if no celebration prefab was assigned.
         if (celebrationShipPrefab == null)
         {
             yield break;
         }
 
+        // Level 2 = 1 ship
+        // Level 3 = 2 ships
+        // Level 4+ = 3 ships
+        int jetsToSpawn = 1;
+
+        if (currentLevel == 3)
+        {
+            jetsToSpawn = 2;
+        }
+        else if (currentLevel >= 4)
+        {
+            jetsToSpawn = 3;
+        }
+
         float centerX = 0f;
 
-        // Special case for only one celebration ship.
-        if (jetsPerLevelUp == 1)
+        if (jetsToSpawn == 1)
         {
             SpawnOneJet(centerX);
 
             yield break;
         }
 
-        // Calculate the starting position so the jets are centered.
         float startX =
             centerX -
-            ((jetsPerLevelUp - 1) *
+            ((jetsToSpawn - 1) *
             jetSpacing / 2f);
 
-        // Spawn each jet with a short delay between them.
         for (int i = 0;
-             i < jetsPerLevelUp;
+             i < jetsToSpawn;
              i++)
         {
             float x =
