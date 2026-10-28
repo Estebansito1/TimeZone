@@ -17,17 +17,25 @@ The player controls a spaceship, destroys asteroids, earns points, survives with
 - Four-direction spaceship movement
 - Single, double, and three-shot weapon progression
 - Two-hit asteroids
+- Points awarded on each successful asteroid hit
 - Score and level progression
 - Increasing asteroid speed and spawn frequency
 - Three-life health system
 - Special health asteroids
 - Continuous scrolling space background
-- Level-up celebration spacecraft
-- Sound effects for shooting, asteroid damage, explosions, player damage, health pickups, upgrades, level-ups, and game over
+- Level-up celebration spacecraft that increase from one to three ships
+- Celebration ships with slightly varied flight directions
+- Persistent high-score system
+- “NEW HIGH SCORE” feedback when a record is broken
 - Start Game screen
-- Game Over screen
+- Game Over screen with final score and high score
+- Flashing Play Again prompt
 - Play Again / restart system
 - Player crash and fire effect
+- Hidden Up, Up, Down, Down support-squad code
+- Three temporary support ships with randomized firing rates and movement
+- Support ships can destroy asteroids, earn score, and be destroyed by collisions
+- Sound effects for shooting, support-ship lasers, asteroid damage, explosions, player damage, health pickups, upgrades, level-ups, support-ship collisions, and game over
 
 ## Documentation
 
