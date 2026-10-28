@@ -1,0 +1,19 @@
+Time Zone – Changes From Original Design
+
+During development, Time Zone remained close to the original one-page design, but several changes and additions were made as the game was implemented and tested.
+
+One major addition was a continuously scrolling space background. The original design called for a dark outer-space background with stars and blue/purple colors, but the finished game uses two looping background images that move downward continuously. The background also scrolls slightly faster as the player reaches higher levels. This was added to create a stronger sense of movement through space and make later levels feel faster.
+
+The level-up celebration system was also adjusted. The original design planned for the number of friendly spacecraft to increase as the player reached higher levels, with a maximum of three. In the finished game, three celebration ships are used for each level-up instead. This made the celebration more noticeable and kept the behavior consistent between levels.
+
+The health system was implemented using a special health asteroid. When the player collects it while below the maximum of three lives, one life is restored. This follows the original extra-life idea but presents the pickup directly as a special asteroid.
+
+Additional visual and audio feedback was added during development. These additions include asteroid hit feedback, asteroid explosion sounds, laser sounds, player damage sounds, a special low-life warning, health pickup audio, weapon-upgrade audio, level-up audio, celebration-ship sounds, a player crash/fire effect, and a Game Over sound.
+
+A complete start and restart system was also implemented. The game begins on a Time Zone Start Game screen. After the player loses all lives, the ship performs a crash animation before the Game Over screen appears. A Play Again button reloads the game and returns the player to the intro screen.
+
+The original design included a separate high-score display and planned for the Game Over screen to show both the final score and high score. A separate persistent high-score system was not implemented in the final version. The current score remains part of the gameplay UI, but the game focuses primarily on score, level progression, survival, weapon upgrades, and replayability.
+
+The major gameplay mechanics from the original design were retained: four-direction movement, the Z key for shooting, two-hit asteroids, three lives, health pickups, increasing asteroid speed and spawn frequency, weapon progression from one shot to two shots and finally a three-shot spread, level progression, and friendly spacecraft celebrations.
+
+These changes were made during development to improve visual feedback, pacing, gameplay clarity, and overall game feel while keeping the main Time Zone concept intact.

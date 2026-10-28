@@ -1,0 +1,22 @@
+AI Usage Notes
+
+I used ChatGPT as a development assistant while building Time Zone in Unity.
+
+AI was used to help with:
+- Debugging Unity and C# errors
+- Reviewing and improving gameplay scripts
+- Explaining how Unity components, prefabs, colliders, UI elements, and references should be connected
+- Building and troubleshooting the player movement and shooting systems
+- Implementing asteroid damage, scoring, lives, health pickups, and level progression
+- Implementing weapon upgrades from one shot to two shots and then a three-shot spread
+- Implementing increasing asteroid speed and spawn frequency
+- Implementing the scrolling background
+- Adding level-up celebration ships
+- Adding and troubleshooting sound effects
+- Creating the Start Game and Game Over / Play Again systems
+- Organizing and commenting the code for readability
+- Troubleshooting Git setup and pushing the project to GitHub
+
+I tested the game directly in Unity after each major change and adjusted the project based on the results. AI was used as a development and troubleshooting tool, while the final implementation was tested and verified in Unity.
+
+I am prepared to explain the main scripts and gameplay systems used in the project, including PlayerController, Asteroid, AsteroidSpawner, HealthAsteroid, ScoreCounter, CelebrationShip, Laser, BackgroundScroll, StartMenu, and GameOverMenu.

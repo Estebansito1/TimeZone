@@ -20,6 +20,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     void Start()
     {
+        // Find the score system so spawn difficulty can scale by level.
         scoreCounter =
             FindFirstObjectByType<ScoreCounter>();
     }
@@ -31,9 +32,11 @@ public class AsteroidSpawner : MonoBehaviour
             return;
         }
 
+        // Every 1000 points increases the game level.
         int level =
             (scoreCounter.score / 1000) + 1;
 
+        // Higher levels reduce the delay between asteroid spawns.
         float spawnDelay = 2f;
 
         if (level == 2)
@@ -49,6 +52,7 @@ public class AsteroidSpawner : MonoBehaviour
             spawnDelay = 1.1f;
         }
 
+        // Spawn another object once the delay has passed.
         if (Time.time >= nextSpawnTime)
         {
             SpawnAsteroid();
@@ -60,6 +64,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     void SpawnAsteroid()
     {
+        // Choose a random horizontal spawn position.
         float randomX =
             Random.Range(minX, maxX);
 
@@ -70,6 +75,7 @@ public class AsteroidSpawner : MonoBehaviour
                 0f
             );
 
+        // Decide whether to spawn a normal or health asteroid.
         float randomChance =
             Random.Range(0f, 1f);
 

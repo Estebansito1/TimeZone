@@ -28,6 +28,8 @@ public class ScoreCounter : MonoBehaviour
 
     void Start()
     {
+        // Find the score text automatically if it was not assigned
+        // in the Inspector.
         if (scoreText == null)
         {
             GameObject scoreGO =
@@ -40,6 +42,7 @@ public class ScoreCounter : MonoBehaviour
             }
         }
 
+        // Find the level text automatically if needed.
         if (levelText == null)
         {
             GameObject levelGO =
@@ -59,11 +62,14 @@ public class ScoreCounter : MonoBehaviour
 
     public void AddScore(int points)
     {
+        // Add points when an asteroid is destroyed.
         score += points;
 
+        // Every pointsPerLevel points increases the level.
         int newLevel =
             (score / pointsPerLevel) + 1;
 
+        // Start the celebration only when entering a new level.
         if (newLevel > currentLevel)
         {
             currentLevel = newLevel;
@@ -78,12 +84,12 @@ public class ScoreCounter : MonoBehaviour
 
     IEnumerator LevelUpCelebration()
     {
+        // Play the main level-up sound first.
         PlayLevelUpSound();
 
         yield return new WaitForSeconds(0.4f);
 
-        // Weapon upgrades only happen
-        // at Level 2 and Level 4.
+        // Weapon upgrades happen at Level 2 and Level 4.
         if (currentLevel == 2 ||
             currentLevel == 4)
         {
@@ -92,6 +98,7 @@ public class ScoreCounter : MonoBehaviour
             yield return new WaitForSeconds(0.35f);
         }
 
+        // Play the jet sound before the celebration ships appear.
         PlayCelebrationJetSound();
 
         StartCoroutine(
@@ -137,6 +144,7 @@ public class ScoreCounter : MonoBehaviour
 
     void UpdateUI()
     {
+        // Update the score display.
         if (scoreText != null)
         {
             scoreText.text =
@@ -144,6 +152,7 @@ public class ScoreCounter : MonoBehaviour
                 score.ToString();
         }
 
+        // Update the level display.
         if (levelText != null)
         {
             levelText.text =
@@ -154,6 +163,7 @@ public class ScoreCounter : MonoBehaviour
 
     IEnumerator SpawnCelebrationJets()
     {
+        // Stop if no celebration prefab was assigned.
         if (celebrationShipPrefab == null)
         {
             yield break;
@@ -161,6 +171,7 @@ public class ScoreCounter : MonoBehaviour
 
         float centerX = 0f;
 
+        // Special case for only one celebration ship.
         if (jetsPerLevelUp == 1)
         {
             SpawnOneJet(centerX);
@@ -168,11 +179,13 @@ public class ScoreCounter : MonoBehaviour
             yield break;
         }
 
+        // Calculate the starting position so the jets are centered.
         float startX =
             centerX -
             ((jetsPerLevelUp - 1) *
             jetSpacing / 2f);
 
+        // Spawn each jet with a short delay between them.
         for (int i = 0;
              i < jetsPerLevelUp;
              i++)

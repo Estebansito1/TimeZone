@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    [Header("Movement")]
     public float baseFallSpeed = 2.5f;
     public float bottomY = -6f;
 
@@ -21,6 +22,7 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
+        // Cache components and the score manager.
         spriteRenderer =
             GetComponent<SpriteRenderer>();
 
@@ -32,12 +34,14 @@ public class Asteroid : MonoBehaviour
     {
         int level = 1;
 
+        // Determine the current game level from the score.
         if (scoreCounter != null)
         {
             level =
                 (scoreCounter.score / 1000) + 1;
         }
 
+        // Asteroids become slightly faster as the level increases.
         float currentSpeed =
             baseFallSpeed +
             ((level - 1) * 0.35f);
@@ -47,6 +51,7 @@ public class Asteroid : MonoBehaviour
             currentSpeed *
             Time.deltaTime;
 
+        // Remove asteroids after they leave the bottom of the screen.
         if (transform.position.y < bottomY)
         {
             Destroy(gameObject);
@@ -57,7 +62,7 @@ public class Asteroid : MonoBehaviour
     {
         hitPoints--;
 
-        // First hit
+        // First hit: play hit sound and tint the asteroid red.
         if (hitPoints == 1)
         {
             if (hitSound != null)
@@ -80,7 +85,7 @@ public class Asteroid : MonoBehaviour
             }
         }
 
-        // Second hit - asteroid destroyed
+        // Final hit: play explosion, award points, and destroy asteroid.
         if (hitPoints <= 0)
         {
             if (explosionSound != null)

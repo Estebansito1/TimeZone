@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Game Over")]
     public GameObject gameOverPanel;
+    public GameObject startPanel;
 
     private float nextFireTime = 0f;
 
@@ -53,9 +54,11 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        // Place the player at the correct starting position.
         transform.position =
             new Vector3(startX, startY, 0f);
 
+        // Find and cache references used throughout the script.
         scoreCounter =
             FindFirstObjectByType<ScoreCounter>();
 
@@ -68,6 +71,7 @@ public class PlayerController : MonoBehaviour
         audioSource =
             GetComponent<AudioSource>();
 
+        // Find the Lives UI text.
         GameObject livesGO =
             GameObject.Find("LivesText");
 
@@ -77,6 +81,7 @@ public class PlayerController : MonoBehaviour
                 livesGO.GetComponent<TextMeshProUGUI>();
         }
 
+        // Find the fire effect automatically if it was not assigned.
         if (fireEffect == null)
         {
             Transform fireTransform =
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // Hide effects and Game Over screen at the beginning.
         if (fireEffect != null)
         {
             fireEffect.SetActive(false);
@@ -104,6 +110,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // Disable player input after Game Over begins.
         if (gameOver)
         {
             return;
@@ -118,6 +125,7 @@ public class PlayerController : MonoBehaviour
         float horizontal = 0f;
         float vertical = 0f;
 
+        // Horizontal input.
         if (Input.GetKey(KeyCode.A) ||
             Input.GetKey(KeyCode.LeftArrow))
         {
@@ -130,6 +138,7 @@ public class PlayerController : MonoBehaviour
             horizontal = 1f;
         }
 
+        // Vertical input.
         if (Input.GetKey(KeyCode.S) ||
             Input.GetKey(KeyCode.DownArrow))
         {
@@ -149,11 +158,13 @@ public class PlayerController : MonoBehaviour
                 0f
             );
 
+        // Move at a consistent speed in all directions.
         transform.position +=
             movement.normalized *
             speed *
             Time.deltaTime;
 
+        // Keep the player inside the playable area.
         Vector3 pos =
             transform.position;
 
@@ -176,6 +187,7 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
+        // Z fires, with a delay to control the fire rate.
         if (Input.GetKey(KeyCode.Z) &&
             Time.time >= nextFireTime)
         {
@@ -184,6 +196,7 @@ public class PlayerController : MonoBehaviour
 
             PlayLaserSound();
 
+            // Weapon strength increases as the player's level increases.
             int level = 1;
 
             if (scoreCounter != null)
@@ -254,6 +267,7 @@ public class PlayerController : MonoBehaviour
 
     void FireSingleShot()
     {
+        // Level 1 weapon: one straight laser.
         Vector3 spawnPosition =
             transform.position +
             new Vector3(
@@ -271,6 +285,7 @@ public class PlayerController : MonoBehaviour
 
     void FireDoubleShot()
     {
+        // Level 2-3 weapon: two straight lasers.
         Vector3 leftPosition =
             transform.position +
             new Vector3(
@@ -302,6 +317,7 @@ public class PlayerController : MonoBehaviour
 
     void FireTripleShot()
     {
+        // Level 4+ weapon: center shot plus two angled side shots.
         Vector3 centerPosition =
             transform.position +
             new Vector3(
@@ -355,6 +371,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Ignore collisions once the player is already in Game Over.
         if (gameOver)
         {
             return;
@@ -363,6 +380,7 @@ public class PlayerController : MonoBehaviour
         Asteroid asteroid =
             other.GetComponent<Asteroid>();
 
+        // Regular asteroid collisions damage the player.
         if (asteroid != null &&
             !isInvincible)
         {
@@ -383,6 +401,7 @@ public class PlayerController : MonoBehaviour
     {
         lives--;
 
+        // Final life starts the crash and Game Over sequence.
         if (lives <= 0)
         {
             lives = 0;
@@ -398,6 +417,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        // Use a different sound when the player reaches one life.
         if (lives == 1)
         {
             PlayLowLifeWarning();
@@ -412,11 +432,13 @@ public class PlayerController : MonoBehaviour
 
     public void AddLife()
     {
+        // Health pickups cannot work after Game Over.
         if (gameOver)
         {
             return;
         }
 
+        // Health cannot increase above the maximum.
         if (lives < maxLives)
         {
             lives++;
@@ -437,11 +459,13 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DamageCooldown()
     {
+        // Temporarily prevent repeated collision damage.
         isInvincible = true;
 
         float blinkDelay = 0.15f;
         float elapsedTime = 0f;
 
+        // Blink the player during the invincibility period.
         while (elapsedTime < invincibleTime)
         {
             if (spriteRenderer != null)
@@ -469,11 +493,13 @@ public class PlayerController : MonoBehaviour
     {
         gameOver = true;
 
+        // Disable collisions while the ship performs the crash animation.
         if (playerCollider != null)
         {
             playerCollider.enabled = false;
         }
 
+        // Turn on the fire particle effect.
         if (fireEffect != null)
         {
             fireEffect.SetActive(true);
@@ -489,6 +515,7 @@ public class PlayerController : MonoBehaviour
 
         float timer = 0f;
 
+        // Spin and move the ship upward during the crash.
         while (timer < crashTime)
         {
             transform.Rotate(
@@ -508,6 +535,13 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
+        // Hide the Start screen so it does not overlap Game Over.
+        if (startPanel != null)
+        {
+            startPanel.SetActive(false);
+        }
+
+        // Show the Game Over screen and freeze gameplay.
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
