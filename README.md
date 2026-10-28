@@ -6,10 +6,10 @@ The player controls a spaceship, destroys asteroids, earns points, survives with
 
 ## Controls
 
-- W / Up Arrow: Move up
-- S / Down Arrow: Move down
-- A / Left Arrow: Move left
-- D / Right Arrow: Move right
+- W or Up Arrow: Move up
+- S or Down Arrow: Move down
+- A or Left Arrow: Move left
+- D or Right Arrow: Move right
 - Z: Fire weapon
 
 ## Gameplay Features
